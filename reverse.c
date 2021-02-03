@@ -1,15 +1,49 @@
+// Programmer:			Zachary William Preston
+// Date:			2021 February 2
+// Course:			Into to Operating Systems
+// Description:			program will enter in the lines of a file backwards, then
+//				will either print to terminal screen or will write to a
+//				output file and save onto the terminal
+
+// Preprocessor Directives
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define FILE_ERROR "--> ERROR: File couldn't be opened"
+#define CMD_ERROR "--> ERROR: Too few arguments ./reverse <input> <output>"
+#define SAME_ERROR "--> ERROR: Input and Output cannot be the same"
+#define MAX_ERROR "--> ERROR: Too many arguments ./reverse <input> <output>"
+#define TEST_IN "test.txt"
+#define TEST_OUT "test2.txt"
 
+// Function Prototypes
 int getNumLines(char *);
 int getMaxLineSize(char *);
 void oneArgument(char *);
 void twoArguments(char *, char *);
 
+// main() - If there is only one argument, CMD error, and then exit
+//	    If there are two arguments, then print to screen in reverse
+//	    If there are 3 arguments, check if in and out are the same
+//		If they are the same, print error and exit program
+//		If they are different, write reverse to the out file
+//	    If there are more than 3 arguments, print error and exit program
 int main(int argc, char *argv[]) {
-	twoArguments(argv[1], argv[2]);
+	if (argc == 1) {
+		printf( "%s\n", CMD_ERROR );
+	} else if (argc == 2) {
+		oneArgument(argv[1]);
+	} else if (argc == 3) {
+		if (strcmp(argv[1], argv[2]) == 0) {
+			printf( "%s\n", SAME_ERROR );
+			exit(1);
+		} else {
+			twoArguments(argv[1], argv[2]);
+		}
+	} else {
+		printf( "%s\n", MAX_ERROR );
+		exit(1);
+	}
 	return EXIT_SUCCESS;
 }
 
@@ -100,6 +134,10 @@ void oneArgument(char *fileName) {
 	}
 }
 
+// twoArguments() - if the user enters in two arguments into the terminal, an input file,
+// 		    and an output file, then will do the same as the oneArgument() function,
+//		    however this time will write to a file instead of printing to terminal,
+//		    using the same procedure as the previous function.
 void twoArguments(char *input, char *output) {
 	int numLines = getNumLines(input);
 	int maxLine = getMaxLineSize(input);

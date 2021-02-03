@@ -1,0 +1,13 @@
+line 13
+zachary william preston
+what time is it?
+line 10
+line 9
+line 8
+line 7
+line 6
+line 5
+hello there
+the number of lines in this file will be displayed
+this is a test of the file size
+hello there

@@ -1,0 +1,13 @@
+hello there
+this is a test of the file size
+the number of lines in this file will be displayed
+hello there
+line 5
+line 6
+line 7
+line 8
+line 9
+line 10
+what time is it?
+zachary william preston
+line 13
