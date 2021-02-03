@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define FILE_ERROR "--> ERROR: File couldn't be opened"
 
 int getNumLines(char *);
 int getMaxLineSize(char *);
+void oneArgument(char *);
 
 int main(int argc, char *argv[]) {
-	int maxSize = getMaxLineSize(argv[1]);
-	printf( "Max Size = %d\n", maxSize );
+	oneArgument(argv[1]);
 	return EXIT_SUCCESS;
 }
 
@@ -64,5 +65,36 @@ int getMaxLineSize(char *fileName) {
 				max = i;
 		} fclose(file);
 		return max;
+	}
+}
+
+// oneArgument() - If one file, "the input file", is input on the terminal, then it will print
+//		   the file contents backwards to the terminal menu. It uses the getNumLines() and
+//		   the getMaxLineSize() functions to allocate the right amount of memory, when
+//		   initializing the array. Finally, once all the content is gathered, uses a for loop
+//		   with a decrement to print the array backwards to the screen, hence "reverse"
+void oneArgument(char *fileName) {
+	int numLines = getNumLines(fileName);
+	int maxLine = getMaxLineSize(fileName);
+	char fileLines[numLines][maxLine + 1];
+	FILE *file = fopen(fileName, "r");
+	if (file == NULL) {
+		printf( "%s\n", FILE_ERROR );
+		exit(1);
+	} else {
+		char *line = NULL;
+		size_t lineSize = 0;
+		ssize_t length;
+		int current = 0;
+		length = getline(&line, &lineSize, file);
+		strcpy(fileLines[current], line);
+		current++;
+		while (length >= 0) {
+			length = getline(&line, &lineSize, file);
+			strcpy(fileLines[current], line);
+			current++;
+		} fclose(file);
+		for (int i = numLines - 1; i >= 0; i--)
+			printf( "%s", fileLines[i] );
 	}
 }
