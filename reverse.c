@@ -6,9 +6,10 @@
 int getNumLines(char *);
 int getMaxLineSize(char *);
 void oneArgument(char *);
+void twoArguments(char *, char *);
 
 int main(int argc, char *argv[]) {
-	oneArgument(argv[1]);
+	twoArguments(argv[1], argv[2]);
 	return EXIT_SUCCESS;
 }
 
@@ -96,5 +97,37 @@ void oneArgument(char *fileName) {
 		} fclose(file);
 		for (int i = numLines - 1; i >= 0; i--)
 			printf( "%s", fileLines[i] );
+	}
+}
+
+void twoArguments(char *input, char *output) {
+	int numLines = getNumLines(input);
+	int maxLine = getMaxLineSize(input);
+	char fileLines[numLines][maxLine + 1];
+	FILE *file = fopen(input, "r");
+	if (file == NULL) {
+		printf( "%s\n", FILE_ERROR );
+		exit(1);
+	} else {
+		char *line = NULL;
+		size_t lineSize = 0;
+		ssize_t length;
+		int current = 0;
+		length = getline(&line, &lineSize, file);
+		strcpy(fileLines[current], line);
+		current++;
+		while (length >= 0) {
+			length = getline(&line, &lineSize, file);
+			strcpy(fileLines[current], line);
+			current++;
+		} fclose(file);
+	} file = fopen(output, "w");
+	if (file == NULL) {
+		printf( "%s\n", FILE_ERROR );
+		exit(1);
+	} else {
+		for (int i = numLines - 1; i >= 0; i--)
+			fprintf(file, "%s", fileLines[i]);
+		fclose(file);
 	}
 }
